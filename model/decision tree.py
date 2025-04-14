@@ -23,33 +23,33 @@ for col in class_vars:
 # training (80%) and test (20%) database
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Entraînement du modèle d’arbre de décision
+# decision tree training
 clf = DecisionTreeClassifier(max_depth=5, random_state=42)  # Limite la profondeur de l'arbre
 clf.fit(X_train, y_train)
 
-# Prédiction sur l’ensemble de test
+# prediction on the test portion
 y_pred = clf.predict(X_test)
-y_pred_proba = clf.predict_proba(X_test)[:, 1]  # Probabilités pour la classe 1 (Défaut)
+y_pred_proba = clf.predict_proba(X_test)[:, 1]  # probabilities for class 1 (default)
 
-# Évaluation du modèle
+# model assessment
 accuracy = accuracy_score(y_test, y_pred)
 conf_matrix = confusion_matrix(y_test, y_pred)
 report = classification_report(y_test, y_pred)
 
-print(f"Précision du modèle : {accuracy:.4f}")
-print("\nMatrice de confusion :")
+print(f"Model accuracy : {accuracy:.4f}")
+print("\n Confusion matrix :")
 print(conf_matrix)
-print("\nRapport de classification :")
+print("\n Classification report :")
 print(report)
 
-# Importance des variables
+# feature importance of variables
 importances = pd.DataFrame({'Variable': X.columns, 'Importance': clf.feature_importances_})
 importances = importances.sort_values(by='Importance', ascending=False)
 
 plt.figure(figsize=(8, 4))
 plt.barh(importances['Variable'], importances['Importance'], color='skyblue')
 plt.xlabel('Importance')
-plt.title("Importance des variables dans l'arbre de décision")
+plt.title("Importance of variables within the decision tree")
 plt.show()
 
 # Visualisation de l’arbre de décision
