@@ -52,24 +52,24 @@ plt.xlabel('Importance')
 plt.title("Importance of variables within the decision tree")
 plt.show()
 
-# Visualisation de l’arbre de décision
+# decision tree visualisation
 plt.figure(figsize=(15, 8))
 plot_tree(clf, feature_names=X.columns, class_names=['Non-Défaut', 'Défaut'], filled=True, fontsize=8)
 plt.title("Visualisation de l'arbre de décision")
 plt.show()
 
-# Génération de la courbe ROC et calcul de l'AUC
+# ROC curve and AUC coefficient
 fpr, tpr, _ = roc_curve(y_test, y_pred_proba)
 roc_auc = auc(fpr, tpr)
 
 plt.figure(figsize=(8, 6))
 plt.plot(fpr, tpr, color='blue', lw=2, label=f'ROC curve (AUC = {roc_auc:.2f})')
-plt.plot([0, 1], [0, 1], color='gray', linestyle='--')  # Ligne de référence
+plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
 plt.xlim([0.0, 1.0])
 plt.ylim([0.0, 1.05])
-plt.xlabel('Taux de faux positifs (FPR)')
-plt.ylabel('Taux de vrais positifs (TPR)')
-plt.title('Courbe ROC du modèle d\'arbre de décision')
+plt.xlabel('Rate of false positives')
+plt.ylabel('Rate of true positives')
+plt.title('Decision tree curve')
 plt.legend(loc='lower right')
 plt.grid()
 plt.show()
