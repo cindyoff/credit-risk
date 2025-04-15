@@ -1,8 +1,19 @@
+/* logistic regression */
 proc logistic data=Base_projet_final descending;
 class investor_orig_time / param=ref;
 model default_time = LTV_time first_time orig_time mat_time hpi_time hpi_orig_time uer_time gdp_time investor_orig_time
 / selection=STEPWISE slentry=0.05 slstay=0.05;
 output out=Predictions P=prob_defaut;
+run;
+
+data Base_projet_final;
+set Base_projet_final;
+correct_class = (predicted_class = default_time);
+run; 
+
+data Base_projet_final;
+set Base_projet_final;
+predicted_class = (pred >= 0.4); /* Tester avec un seuil de 0.4 */
 run;
 
 /* ROC curve */
@@ -23,14 +34,12 @@ proc means data=Base_projet_final mean ;
 var correct_class;
 run; 
 
-DATA Base_projet_final;
-SET Base_projet_final;
-correct_class = (predicted_class = default_time);
-RUN;
-DATA Base_projet_final;
-SET Base_projet_final;
-predicted_class = (pred >= 0.4); /* Tester avec un seuil de 0.4 */
-RUN;
+
+
+
+
+
+
 PROC LOGISTIC DATA=Base_projet_final;
 CLASS LTV_time_class first_time_class orig_time_class mat_time_class
 hpi_time_class uer_time_class gdp_time_class investor_orig_time / PARAM=REF;
@@ -63,6 +72,7 @@ RUN;
 PROC MEANS DATA=pred_logit_class MEAN;
 VAR correct_class;
 RUN;
+
 /* Regroupement des classes apres analyse des WoE */
 DATA Base_projet_final;
 SET Base_projet_final;
