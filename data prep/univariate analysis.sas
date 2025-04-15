@@ -11,34 +11,39 @@ FICO_orig_time LTV_orig_time Interest_Rate_orig_time hpi_orig_time;
 title "Descriptive statistics of numerical variables";
 run;
 
-/* 3. Visualisation des distributions avec des histogrammes */
-PROC SGPLOT DATA=base_projet_v2;
-HISTOGRAM balance_time;
-DENSITY balance_time;
-TITLE "Distribution de balance_time";
-RUN;
-PROC SGPLOT DATA=base_projet_v2;
-HISTOGRAM LTV_time;
-DENSITY LTV_time;
-TITLE "Distribution de LTV_time";
-RUN;
-PROC SGPLOT DATA=base_projet_v2;
-HISTOGRAM interest_rate_time;
-DENSITY interest_rate_time;
-TITLE "Distribution de interest_rate_time";
-RUN;
-PROC SGPLOT DATA=base_projet_v2;
-HISTOGRAM hpi_time;
-DENSITY hpi_time;
-TITLE "Distribution de hpi_time";
-RUN;
-PROC SGPLOT DATA=base_projet_v2;
-HISTOGRAM gdp_time;
-DENSITY gdp_time;
-TITLE "Distribution de gdp_time";
-RUN;
-PROC SGPLOT DATA=base_projet_v2;
-HISTOGRAM uer_time;
-DENSITY uer_time;
-TITLE "Distribution de uer_time";
-RUN;
+/* Visualisation of distributions via histograms */
+proc sgplot data=base_projet_v2;
+histogram balance_time;
+density balance_time;
+title "Distribution of balance_time";
+run;
+
+proc sgplot data=base_projet_v2;
+histogram LTV_time;
+density LTV_time;
+title "Distribution of LTV_time";
+run;
+
+proc sgplot data=base_projet_v2;
+histogram interest_rate_time;
+density interest_rate_time;
+title "Distribution of interest_rate_time";
+run;
+
+proc sgplot data=base_projet_v2;
+histogram hpi_time;
+density hpi_time;
+title "Distribution of hpi_time";
+run; 
+
+proc sgplot data=base_projet_v2;
+histogram gdp_time;
+density gdp_time;
+title "Distribution of gdp_time";
+run;
+
+proc sgplot data=base_projet_v2;
+histogram uer_time;
+density uer_time;
+title "Distribution of uer_time";
+run;
