@@ -1,4 +1,4 @@
-/* logistic regression */
+/* logistic regression without categories */
 proc logistic data=Base_projet_final descending;
 class investor_orig_time / param=ref;
 model default_time = LTV_time first_time orig_time mat_time hpi_time hpi_orig_time uer_time gdp_time investor_orig_time
@@ -6,6 +6,7 @@ model default_time = LTV_time first_time orig_time mat_time hpi_time hpi_orig_ti
 output out=Predictions P=prob_defaut;
 run;
 
+/* logistic regression with the categories created */
 proc logistic data=Base_projet_final;
 class LTV_time_class first_time_class orig_time_class mat_time_class
 hpi_time_class uer_time_class gdp_time_class investor_orig_time / PARAM=REF;
