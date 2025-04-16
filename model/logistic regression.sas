@@ -6,6 +6,22 @@ model default_time = LTV_time first_time orig_time mat_time hpi_time hpi_orig_ti
 output out=Predictions P=prob_defaut;
 run;
 
+proc logistic data=Base_projet_final;
+class LTV_time_class first_time_class orig_time_class mat_time_class
+hpi_time_class uer_time_class gdp_time_class investor_orig_time / PARAM=REF;
+model DEFAUT (event='1') = LTV_time_class first_time_class orig_time_class mat_time_class
+hpi_time_class uer_time_class gdp_time_class investor_orig_time;
+run;
+
+proc logistic data=Base_projet_final PLOTS(ONLY)=ROC;
+class LTV_time_class first_time_class orig_time_class mat_time_class
+hpi_time_class uer_time_class gdp_time_class investor_orig_time
+FICO_orig_time_class / PARAM=REF;
+model default_time (EVENT='1') = LTV_time_class first_time_class orig_time_class mat_time_class
+hpi_time_class uer_time_class gdp_time_class investor_orig_time
+FICO_orig_time_class;
+run;
+
 data Base_projet_final;
 set Base_projet_final;
 correct_class = (predicted_class = default_time);
@@ -90,20 +106,8 @@ run;
 
 
 
-PROC LOGISTIC DATA=Base_projet_final;
-CLASS LTV_time_class first_time_class orig_time_class mat_time_class
-hpi_time_class uer_time_class gdp_time_class investor_orig_time / PARAM=REF;
-MODEL DEFAUT (EVENT='1') = LTV_time_class first_time_class orig_time_class mat_time_class
-hpi_time_class uer_time_class gdp_time_class investor_orig_time;
-RUN;
-PROC LOGISTIC DATA=Base_projet_final PLOTS(ONLY)=ROC;
-CLASS LTV_time_class first_time_class orig_time_class mat_time_class
-hpi_time_class uer_time_class gdp_time_class investor_orig_time
-FICO_orig_time_class / PARAM=REF;
-MODEL default_time (EVENT='1') =
-LTV_time_class first_time_class orig_time_class mat_time_class
-hpi_time_class uer_time_class gdp_time_class investor_orig_time
-FICO_orig_time_class;
+
+
 
 
 
