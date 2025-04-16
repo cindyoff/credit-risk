@@ -11,10 +11,60 @@ set Base_projet_final;
 correct_class = (predicted_class = default_time);
 run; 
 
+/* predictions, 0.4 */
 data Base_projet_final;
 set Base_projet_final;
 predicted_class = (pred >= 0.4); /* Tester avec un seuil de 0.4 */
 run;
+
+data pred_logit_class;
+set pred_logit_class;
+predicted_class = (pred >= 0.5);
+run;
+
+proc freq data=pred_logit_class;
+tables default_time*predicted_class / chisq ;
+run; 
+
+data pred_logit_class;
+set pred_logit_class;
+correct_class = (default_time = predicted_class);
+run;
+
+/* generating the mean value of predictions */
+proc means data=pred_logit_class mean ;
+var correct_class;
+run;
+
+/* predictions, 0.5 */
+output out=pred_logit_class P=pred;
+run;
+
+data pred_logit_class;
+set pred_logit_class;
+predicted_class = (pred >= 0.5);
+run;
+
+proc freq data=pred_logit_class;
+tables default_time*predicted_class / chisq ;
+run; 
+
+data pred_logit_class;
+set pred_logit_class;
+correct_class = (default_time = predicted_class);
+run;
+
+/* generating the mean value of predictions */
+proc means data=pred_logit_class mean ;
+var correct_class;
+run;
+
+
+
+
+
+
+
 
 /* ROC curve */
 proc logistic data=Base_projet_final;
@@ -43,8 +93,7 @@ run;
 PROC LOGISTIC DATA=Base_projet_final;
 CLASS LTV_time_class first_time_class orig_time_class mat_time_class
 hpi_time_class uer_time_class gdp_time_class investor_orig_time / PARAM=REF;
-MODEL DEFAUT (EVENT='1') =
-LTV_time_class first_time_class orig_time_class mat_time_class
+MODEL DEFAUT (EVENT='1') = LTV_time_class first_time_class orig_time_class mat_time_class
 hpi_time_class uer_time_class gdp_time_class investor_orig_time;
 RUN;
 PROC LOGISTIC DATA=Base_projet_final PLOTS(ONLY)=ROC;
@@ -55,23 +104,8 @@ MODEL default_time (EVENT='1') =
 LTV_time_class first_time_class orig_time_class mat_time_class
 hpi_time_class uer_time_class gdp_time_class investor_orig_time
 FICO_orig_time_class;
-/* Génération des prédictions */
-OUTPUT OUT=pred_logit_class P=pred;
-RUN;
-DATA pred_logit_class;
-SET pred_logit_class;
-predicted_class = (pred >= 0.5);
-RUN;
-PROC FREQ DATA=pred_logit_class;
-TABLES default_time*predicted_class / CHISQ;
-RUN;
-DATA pred_logit_class;
-SET pred_logit_class;
-correct_class = (default_time = predicted_class);
-RUN;
-PROC MEANS DATA=pred_logit_class MEAN;
-VAR correct_class;
-RUN;
+
+
 
 /* Regroupement des classes apres analyse des WoE */
 DATA Base_projet_final;
