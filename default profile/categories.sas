@@ -155,11 +155,32 @@ proc freq data=Base_projet_final;
 tables FICO_orig_time_class_group uer_time_class_group hpi_time_class_group LTV_time_class_group orig_time_class_group;
 run;
 
-/* Calcul du taux de classification correcte */
-DATA pred_logit_class;
-SET pred_logit_class;
-correct_class = (default_time = predicted_class);
-RUN;
-PROC MEANS DATA=pred_logit_class MEAN;
-VAR correct_class;
-RUN;
+/* chi-square test to analyse the influence of categories on the default risk */
+%macro chi2(var);
+proc freq data=Base_projet_final;
+tables &var. * DEFAUT / chisq out=chi_&var.;
+run;
+proc transpose data=chi_&var. out=chi_&var._1 prefix=_;
+var count;
+id DEFAUT;
+by &var.;
+run;
+data chi_&var._1;
+set chi_&var._1;
+p1=_1/(_0 + _1);
+run;
+proc gplot data=chi_&var._1;
+plot p1 * &var.;
+run;
+quit;
+%mend;
+
+%chi2(var=LTV_time_class);
+%chi2(var=mat_time_class);
+%chi2(var=hpi_time_class);
+%chi2(var=gdp_time_class);
+%chi2(var=FICO_orig_time_class);
+%chi2(var=interest_rate_time_class);
+%chi2(var=balance_time_class);
+%chi2(var=balance_orig_time_class);
+%chi2(var=LTV_orig_time_class);
