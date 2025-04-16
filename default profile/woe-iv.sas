@@ -1,10 +1,4 @@
-/* WoE (weight of evidence) analysis */
-/* heatmap */
-proc sgplot data=corr_ready;
-heatmapparm x=variable y=y_variable colorresponse=corr_value /
-colormodel=twocolorramp;
-title " Corrélations entre les Variables et le Risque de Défaut ";
-run;
+
 
 
 
