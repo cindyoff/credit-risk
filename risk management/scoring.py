@@ -80,16 +80,6 @@ plt.title("Proportion of borrowers accoring to their level of risk")
 plt.grid(axis='y')
 plt.show()
 
-
-
-
-
-
-
-
-
-
-
 # comparing statistics between each PD risk category
 risk_stats = df_results.groupby('Risque_Credit')['PD'].describe()
 print("\nStatistics of PD per risk category :")
