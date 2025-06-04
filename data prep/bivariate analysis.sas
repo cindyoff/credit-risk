@@ -13,7 +13,7 @@ proc sgplot data=work.base_projet_v2;
 histogram fico_orig_time / group=status_time transparency=0.5;
 density fico_orig_time / group=status_time type=KERNEL;
 xaxis label="Loan status (status_time)";
-yaxis label="Frequency";
+yaxis label="Frequency" ;
 keylegend / title="Loan status";
 title "Histogram of FICO score according to loan status";
 run;
