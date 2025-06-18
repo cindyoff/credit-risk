@@ -21,3 +21,8 @@
   - classification_report
   - auc
   - roc_curve
+
+## statistical tests
+- scipy.stats
+  - chi2_contingency
+  - ttest_ind
